@@ -6,7 +6,7 @@ const getRequestTicket = async (req, res, next) => {
   const { barberID, clientID } = req.params;
   let data;
   if (barberID != '0') {
-    data = await ticket.read(barberID, false);
+    data = await ticket.read(barberID);
   } else if (clientID) {
     data = await ticket.read(false, clientID);
   }
@@ -20,14 +20,11 @@ const addToQueue = async (req, res, next) => {
   const queue = new Interface('queue');
 
   const addedQueue = await queue.create(req.body);
-  
+
   const deletedTicket = await ticket.deletee(req.body);
 
   res.json({ addedQueue, deletedTicket });
 };
-
-
-
 
 const addToQueueManual = async (req, res, next) => {
   const data = await ticket.create(req.body);
