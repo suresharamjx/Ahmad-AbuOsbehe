@@ -27,14 +27,16 @@ Router.put('/services/:serviceID', editServices);
 Router.delete('/services/:serviceID/:barberID', deleteServices);
 Router.get(`/products/:productID/:barberID`, getProduct);
 // uploadProduct.array('products', 5),
-Router.post('/products', uploadProduct.single('productImg'), createProduct);
-Router.put('/products/:productID/:barberID', uploadProduct.single('productImg'), editProduct);
+// , uploadProduct.single('productImg')
+Router.post('/products', createProduct);
+// , uploadProduct.single('productImg')
+Router.put('/products/:productID/:barberID', editProduct);
 Router.delete('/products/:productID/:barberID', deleteProduct);
 Router.get('/queue/:barberID/:clientID', getRequestTicket);
 Router.post('/queue/post', addToQueue);
 Router.delete('/queue', removeTheRequest);
 Router.post('/queue/manual', addToQueueManual);
-Router.get('/queue/get', getQueue);
+Router.get('/queue/get/:barberID/:clientID/:queueID', getQueue);
 Router.delete('/queue/delete/:queueID/:barberID/:clientID', deleteQueue);
 
 Router.get('/requests/:barberID', getRequestTicket);
