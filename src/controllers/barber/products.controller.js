@@ -7,7 +7,7 @@ const createProduct = async (req, res, next) => {
     console.log('req.body', req.body);
     console.log('req.file', req.file);
 
-    const path = req.file.path.substring(3);
+    // const path = req.file.path.substring(3);
 
     const { barberID, productName, productDescrp, productPrice, discount, endDate, productImg } = req.body;
     let productData = {
@@ -17,7 +17,7 @@ const createProduct = async (req, res, next) => {
       productPrice,
       discount,
       endDate,
-      productImg: path,
+      productImg: productImg,
     };
     let productResponse = await interfaceSql.create(productData);
     res.send(productResponse);
@@ -51,7 +51,7 @@ const getProduct = async (req, res, next) => {
 };
 
 const editProduct = async (req, res, next) => {
-  const path = req.file.path.substring(3);
+  // const path = req.file.path.substring(3);
 
   // update a product
   try {
@@ -64,7 +64,7 @@ const editProduct = async (req, res, next) => {
       productPrice,
       discount,
       endDate,
-      productImg: path,
+      productImg: productImg,
     };
 
     console.log('productDataUpdated', productDataUpdated);
