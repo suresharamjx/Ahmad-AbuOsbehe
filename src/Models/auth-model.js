@@ -6,8 +6,8 @@ class Interface {
     this.table = table;
   }
 
-  read(email) {
-    const data = pool.query(`SELECT * FROM ${this.table} WHERE email=$1`, [email]);
+  async read(email) {
+    const data = await pool.query(`SELECT * FROM ${this.table} WHERE email=$1`, [email]);
     return data;
   }
 
@@ -30,19 +30,17 @@ class Interface {
   }
 
   create(req) {
+    let profile_pic;
+    if (req.body.profile_pic) {
+      profile_pic = req.body.profile_pic;
+    } else if (req.body.gender === 'male') {
+      profile_pic = `/images/profilePics/male.jpg`;
+    } else {
+      profile_pic = `/images/profilePics/female.jpg`;
+    }
     if (this.table === 'barber') {
       const user_name = `${req.body.firstName} ${req.body.lastName}`;
       const state = 'open';
-   
-      console.log('file',req.file);
-      let profile_pic;
-      if (req.file) {
-        profile_pic = `/images/profilePics/${req.file.filename}`;
-      } else if (req.body.gender === 'male') {
-        profile_pic = `/images/profilePics/male.jpg`;
-      } else {
-        profile_pic = `/images/profilePics/female.jpg`;
-      }
 
       const { email, password, age, gender, city, address, phone_num, working_hours, holidays, shop_name, shop_gender, verification } = req.body;
       const sql = `INSERT INTO barber (user_name,email,password,age,gender,city,address,profile_pic,phone_num,working_hours,holidays,shop_name,shop_gender,state,verification_token) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) RETURNING *;`;
@@ -52,14 +50,6 @@ class Interface {
     }
 
     if (this.table === 'client') {
-      let profile_pic;
-      if (req.file) {
-        profile_pic = `/images/profilePics/${req.file.filename}`;
-      } else if (req.body.gender === 'male') {
-        profile_pic = `/images/profilePics/male.jpg`;
-      } else {
-        profile_pic = `/images/profilePics/female.jpg`;
-      }
       const user_name = `${req.body.firstName} ${req.body.lastName}`;
       const { email, password, age, gender, city, phone_num, verification } = req.body;
       const sql = 'INSERT INTO client (user_name,email,password,age,gender,city,profile_pic,phone_num,verification_token) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *;';
@@ -120,7 +110,7 @@ class Barber {
     this.user_name = data.user_name;
     this.city = data.city;
     this.address = data.address;
-    this.email=data.email;
+    this.email = data.email;
     this.gender = data.gender;
     this.age = data.age;
     this.shop_gender = data.shop_gender;

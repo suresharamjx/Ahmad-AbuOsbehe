@@ -5,13 +5,12 @@ const { createTicket, deleteTicket, updateTicket } = require('../controllers/cli
 const { getReviews, postReview, deleteReview } = require('../controllers/client/review.controller');
 const { addBarber, removeBarber } = require('../controllers/client/subs.controller');
 const bearer = require('../middleware/bearer-auth');
-const uploadProfilePic = require('../middleware/multer').uploadProfilepic;
 const basic = require('../middleware/basic-auth');
 
 //
 Router.get('/user', getClients);
 Router.get('/user/:id', getClients);
-Router.put('/user/:id', uploadProfilePic.single('profile_pic'), updateClients);
+Router.put('/user/:id', updateClients);
 Router.delete('/user', deleteClient);
 //
 Router.post('/tickets', createTicket);

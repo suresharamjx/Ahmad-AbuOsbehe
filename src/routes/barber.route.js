@@ -8,17 +8,16 @@ const { getProduct, createProduct, editProduct, deleteProduct } = require('../co
 const getSubscribers = require('../controllers/barber/subs.controller');
 const bearer = require('../middleware/bearer-auth');
 const basic = require('../middleware/basic-auth');
-const { uploadcuts, uploadvideo, uploadProfilepic, uploadProduct } = require('../middleware/multer');
 const { getQueue, deleteQueue } = require('../controllers/barber/queue.controller');
 
 Router.get('/user', getBarbers);
-Router.get('/user/:id', getBarbers); // need to add multer middleware
-Router.put('/user/:id', uploadProfilepic.single('profile_pic'), updateBarber);
+Router.get('/user/:id', getBarbers);
+Router.put('/user/:id', updateBarber);
 Router.delete('/user', basic, deleteBerber);
 Router.get('/subs/:barberid/:clientid', getSubscribers);
 Router.get('/media', getAllMedia);
-Router.post('/media/photos', uploadcuts.array('cuts', 5), addPhotos);
-Router.post('/media/videos', uploadvideo.array('videos', 5), addVideos);
+Router.post('/media/photos', addPhotos);
+Router.post('/media/videos', addVideos);
 Router.delete('/media/photos/:id', deletePhotos);
 Router.delete('/media/videos/:id', deleteVideos);
 Router.get('/services/:serviceID/:barberID', getServices);
@@ -26,10 +25,7 @@ Router.post('/services', createServices);
 Router.put('/services/:serviceID', editServices);
 Router.delete('/services/:serviceID/:barberID', deleteServices);
 Router.get(`/products/:productID/:barberID`, getProduct);
-// uploadProduct.array('products', 5),
-// , uploadProduct.single('productImg')
 Router.post('/products', createProduct);
-// , uploadProduct.single('productImg')
 Router.put('/products/:productID/:barberID', editProduct);
 Router.delete('/products/:productID/:barberID', deleteProduct);
 Router.get('/queue/:barberID/:clientID', getRequestTicket);

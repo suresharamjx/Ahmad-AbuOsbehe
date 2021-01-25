@@ -10,6 +10,7 @@ const mailer = require('./mailer');
 const { v4: uuidv4 } = require('uuid');
 
 const signIn = async (req, res, next) => {
+  console.log('req.user', req.user);
   const user = {
     user: req.user,
     token: (req.token = jwt.sign(req.user.email, secret)),
@@ -24,12 +25,14 @@ const signUp = async (req, res, next) => {
     const role = req.body.role;
     const user = new Interface(`${role}`);
     const checkUser = await user.read(req.body.email);
-    
+    console.log('req.body', req.body);
+
     let verificationToken = uuidv4().split('-')[0];
-    req.body.verification = verificationToken;
-    mailer.send(req.body.email, req.body.verification);
-    if (checkUser.rows[0]) return next(`This email is already a ${role} registered account`);
-    
+    req.body.verification = '123';
+    // req.body.verification = verificationToken;
+    // mailer.send(req.body.email, req.body.verification);
+    // if (checkUser.rows[0]) return next(`This email is already a ${role} registered account`);
+
     const account = await user.create(req);
     console.log(account);
     res.status(201).json(account.rows[0]);

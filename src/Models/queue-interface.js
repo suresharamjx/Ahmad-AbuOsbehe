@@ -36,8 +36,18 @@ class Interface {
       // `SELECT * FROM ${this.table} WHERE barber_id =$1;`
       return pool.query(sql, [barber_id]);
     } else if (client_id) {
+      console.log('hello from last step', client_id);
       //get all queues for one client
-      return pool.query(`SELECT * FROM ${this.table} WHERE client_id = $1,;`, [client_id]);
+
+      const sql = `SELECT barber.working_hours,${this.table}.id,${this.table}.barber_id, ${this.table}.time, barber.profile_pic, barber.user_name, barber.phone_num,services.service_name, services.description, services.price, services.estimated_time,services.id as service_id,client.id as client_id
+      FROM ${this.table}
+      INNER JOIN client ON client.id=${this.table}.client_id 
+      INNER JOIN services ON services.id=${this.table}.service_id 
+      INNER JOIN barber ON barber.id=${this.table}.barber_id 
+      
+      WHERE ${this.table}.client_id =$1;`;
+
+      return pool.query(sql, [client_id]);
     } else {
       //get all queues for all barbers for all clients
       return pool.query(`SELECT * FROM ${this.table};`);
