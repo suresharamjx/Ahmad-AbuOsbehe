@@ -28,10 +28,10 @@ const signUp = async (req, res, next) => {
     console.log('req.body', req.body);
 
     let verificationToken = uuidv4().split('-')[0];
-    req.body.verification = '123';
-    // req.body.verification = verificationToken;
-    // mailer.send(req.body.email, req.body.verification);
-    // if (checkUser.rows[0]) return next(`This email is already a ${role} registered account`);
+    // req.body.verification = '123';
+    req.body.verification = verificationToken;
+    mailer.send(req.body.email, req.body.verification);
+    if (checkUser.rows[0]) return next(`This email is already a ${role} registered account`);
 
     const account = await user.create(req);
     console.log(account);
