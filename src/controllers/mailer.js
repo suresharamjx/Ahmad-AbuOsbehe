@@ -20,7 +20,7 @@ class Mailer {
       to: reciver, // list of receivers
       subject: 'verification', // Subject line
       text: '', // plain text body
-      html: `<b>Hello ${reciver},your verification code is : ${token}</b>`, // html body
+      html: `<b>Hello ${reciver}, your verification code for 'I SALOON' is : ${token}</b>`, // html body
     });
 
     console.log('Message sent: %s', info.messageId);
